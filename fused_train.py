@@ -13,7 +13,7 @@ from torch.utils.data.distributed import DistributedSampler
 from torchvision import datasets,transforms
 from torch.utils import data
 
-import models.LagerMLP as MLPloader
+import models.bottleMLP as MLPloader
 import models.torch_resnet_loader as tRESloader
 
 import tools.AveModelTest as AMT
