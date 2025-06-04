@@ -37,9 +37,6 @@ def Exponential(world_size):
             topo.append(tem)
     return topo
 
-def ForceRandom(topo,B,world_size):
-    #Implemented by the optimizer
-    return topo
 
 def Generate(outdegree, world_size):
     topo=[]
@@ -56,9 +53,6 @@ def TopoLoador(args):
         return LocalUpdate(topo,args.B,args.world_size)
     if args.strategy=='Exponential':
         return Exponential(args.world_size)
-    if args.strategy=='ForceRandom':
-        topo=topo_read(args.topology)
-        return ForceRandom(topo,args.B,args.world_size)
     if args.strategy=='Generate':
         return Generate(args.outdegree, args.world_size)
     return topo
