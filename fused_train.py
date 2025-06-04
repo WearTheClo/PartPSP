@@ -15,7 +15,6 @@ from torch.utils import data
 
 import models.LagerMLP as MLPloader
 import models.torch_resnet_loader as tRESloader
-import models.torch_vit_loader as tVITloader
 
 import tools.AveModelTest as AMT
 import evaluation.evaluate as eva
