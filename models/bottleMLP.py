@@ -94,8 +94,8 @@ def fused_torch_bottmlp_loader(in_features: int = 1000, num_classes: int = 10, s
         ext = Com2FrontFFN(in_features, num_classes)
         loc = Com2BackFFN(in_features, num_classes)
         if pretrained:
-            ext.load_state_dict(torch.load('Com2FrontFFN_old.pth', weights_only=True))
-            loc.load_state_dict(torch.load('Com2BackFFN_old.pth', weights_only=True))
+            ext.load_state_dict(torch.load('./models/Com2FrontBottFFN.pth', weights_only=True))
+            loc.load_state_dict(torch.load('./models/Com2BackBottFFN.pth', weights_only=True))
         return ext, loc
 
     #ext = FullFFN(in_features, num_classes)
@@ -112,6 +112,6 @@ def unify_torch_bottmlp_loader(in_features: int = 1000, num_classes: int = 10, p
     return model
 
 if __name__ == "__main__":
-    ext, loc = fused_torch_bottmlp_loader(in_features=784, num_classes=10, shared = 2, pretrained = True)
-    #torch.save(ext.state_dict(), 'Com1FrontBottFFN.pth')
-    #torch.save(loc.state_dict(), 'Com1BackBottFFN.pth')
+    ext, loc = fused_torch_bottmlp_loader(in_features=784, num_classes=10, shared = 1)
+    torch.save(ext.state_dict(), 'Com1FrontBottFFN.pth')
+    torch.save(loc.state_dict(), 'Com1BackBottFFN.pth')
