@@ -10,9 +10,8 @@ from fused_train import train_process
 from topology.TopoLoador import TopoLoador
 
 # mnist, fmnist, cifar10
-# MLP,  resnet, vit
+# MLP,  resnet
 # pretrain on torchvision
-# iid is deleted, use distributed sampler which is the same with DPFL
 
 def main():
     parser = argparse.ArgumentParser(description='Decentralized image classification.')
