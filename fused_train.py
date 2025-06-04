@@ -1,7 +1,6 @@
 # mnist, fmnist, cifar10
-# MLP,  resnet, vit
+# MLP,  resnet
 # pretrain on torchvision
-# 增加初始化的共享参数同步轮，以优化S表现
 
 import torch
 import torch.nn as nn
@@ -34,19 +33,10 @@ def unfreeze_params(model):
         param.requires_grad = True
 
 
-# 计算中间变量之间的距离
-def reduce_inter(inter, world_size):
-    inter_all = torch.clone(inter).detach()
-    distributed.all_reduce(inter_all)
-    inter_all.div_(world_size)
-    return int((inter_all-inter).abs().sum())
-
-
 def train_process(rank,args):
     args.rank = rank
-    #ngpus_per_node = 5
-    #gpu_id = args.rank % ngpus_per_node + 2
-    gpu_id = 0
+    ngpus_per_node = torch.cuda.device_count()
+    gpu_id = args.rank % ngpus_per_node
     args.device=torch.device('cuda:'+str(gpu_id))
     torch.cuda.set_device(gpu_id)
 
@@ -77,16 +67,15 @@ def train_process(rank,args):
         ])
         train_dataset = datasets.CIFAR10(root=args.data_path,train=True,download=False,transform=transform)
         test_dataset = datasets.CIFAR10(root=args.data_path,train=False,download=False,transform=transform)
-
-    # 这个采样器会在所有节点上平分shuffle后的数据集
+    
     train_sampler = DistributedSampler(train_dataset, num_replicas=args.world_size, rank=args.rank, shuffle=True)
 
     train_loader=data.DataLoader(train_dataset,args.batch_size,sampler=train_sampler)
     test_loader=data.DataLoader(test_dataset,args.batch_size)
     
-    if args.model == 'MLP': # 新版本全通信也会在本地保留一层解码器
+    if args.model == 'MLP':
         ext_model, cla_model = MLPloader.fused_torch_bottmlp_loader(in_features=784, num_classes=num_classes, shared = args.shared_layers, pretrained=args.pretrained) #mnist专用
-    elif args.model == 'Resnet18': # 还没改
+    elif args.model == 'Resnet18':
         ext_model, cla_model = tRESloader.fused_torch_resnet18_loader(num_classes=num_classes, shared = args.shared_layers, pretrained=args.pretrained)
     elif args.model == 'Resnet34':
         ext_model, cla_model = tRESloader.fused_torch_resnet34_loader(num_classes=num_classes, shared = args.shared_layers, pretrained=args.pretrained)
@@ -111,7 +100,7 @@ def train_process(rank,args):
         test_loss = 0.0
         test_size = 0
         
-        if (i+1)%5==0 and args.noi_lr_decay: #注意噪声衰减需要在extractorGP前面，且噪声衰减和提取器衰减一起用
+        if (i+1)%5==0 and args.noi_lr_decay:
             args.noi_lr /= 10
             print("noise step size decay to {}".format(args.noi_lr))
         if (i+1)%5==0 and args.ext_lr_decay:
@@ -123,7 +112,6 @@ def train_process(rank,args):
             cla_optimizer = torch.optim.SGD(cla_model.parameters(), lr=args.cla_lr)
             print("classifier's step size decay to {}".format(args.cla_lr))
         
-        # 提取器用平均，分类器用本地，全局数据集测试，最后规约到平均准确度
         ave_model = copy.deepcopy(ext_model)
         ave_optimizer = AMT.AVEModelTest(params=ave_model.parameters(), args=args)
         ave_optimizer.ave_params()
@@ -195,12 +183,11 @@ def train_process(rank,args):
                 distributed.all_reduce(train_acc_sum)
                 train_acc_sum.div_(args.world_size)
                 train_loss_sum = train_loss/train_size
-                #print(reduce_inter(y_ext, args.world_size))
                 if rank==0:
                     print(f'epoch:{i:2} batch:{b:2} Train loss:{train_loss_sum:10.8f} Train accuracy:{100*train_acc_sum:10.8f}')
-    #e.np_save()
+
     if rank==0:
-        L1_array = np.array(L1_list) # 只保存节点0的敏感度信息
+        L1_array = np.array(L1_list)
         np.save(args.eva_store_path + '.npy', L1_array)
         print(np.mean(L1_array[:, 0]), np.mean(L1_array[:, 1]))
         real_bigger_esti = 0
