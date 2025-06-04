@@ -87,8 +87,8 @@ def fused_torch_bottmlp_loader(in_features: int = 1000, num_classes: int = 10, s
         ext = Com1FrontFFN(in_features, num_classes)
         loc = Com1BackFFN(num_classes, in_features, num_classes)
         if pretrained:
-            ext.load_state_dict(torch.load('./models/Com1FrontFFN.pth', weights_only=True))
-            loc.load_state_dict(torch.load('./models/Com1BackFFN.pth', weights_only=True))
+            ext.load_state_dict(torch.load('./models/Com1FrontBottFFN.pth', weights_only=True))
+            loc.load_state_dict(torch.load('./models/Com1BackBottFFN.pth', weights_only=True))
         return ext, loc
     elif shared == 2:
         ext = Com2FrontFFN(in_features, num_classes)
