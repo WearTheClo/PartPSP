@@ -1,0 +1,2 @@
+epoch:0 Loss: 0.0237444 Accuracy: 9.3989992% L2Dis: 0.0000000
+epoch:1 Loss: 0.0320947 Accuracy:31.0430012% L2Dis: 0.0000000
