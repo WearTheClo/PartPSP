@@ -1,0 +1,12 @@
+epoch:0 Loss: 0.0231730 Accuracy:10.2799997% L2Dis: 0.0000000
+epoch:1 Loss: 0.0180492 Accuracy:40.6960030% L2Dis: 0.0000000
+epoch:2 Loss: 0.0168580 Accuracy:47.4080009% L2Dis: 0.0000000
+epoch:3 Loss: 0.0168133 Accuracy:46.3360023% L2Dis: 0.0000000
+epoch:4 Loss: 0.0168461 Accuracy:46.3499947% L2Dis: 0.0000000
+epoch:5 Loss: 0.0164831 Accuracy:48.9189987% L2Dis: 0.0000000
+epoch:6 Loss: 0.0163265 Accuracy:50.0529976% L2Dis: 0.0000000
+epoch:7 Loss: 0.0162083 Accuracy:50.8370018% L2Dis: 0.0000000
+epoch:8 Loss: 0.0161054 Accuracy:51.4700012% L2Dis: 0.0000000
+epoch:9 Loss: 0.0160111 Accuracy:51.9759979% L2Dis: 0.0000000
+epoch:10 Loss: 0.0160009 Accuracy:52.0450058% L2Dis: 0.0000000
+epoch:11 Loss: 0.0159910 Accuracy:52.0919991% L2Dis: 0.0000000
