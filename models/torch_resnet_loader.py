@@ -203,23 +203,3 @@ if __name__ == "__main__":
     mid18 = ext34pre(x)
     y = loc34pre(mid18)
     print("ext18 good")
-
-'''
-def fused_torch_resnet_loader(model: str, num_classes: int = 10, pretrained: bool = False):
-    if model == 'Resnet18':
-        if pretrained:
-            ext_model = resnet.resnet18(weights = resnet.ResNet18_Weights.IMAGENET1K_V1)
-        else:
-            ext_model = resnet.resnet18(weights = None)
-    elif model == 'Resnet50':
-        if pretrained:
-            ext_model = resnet.resnet50(weights = resnet.ResNet50_Weights.IMAGENET1K_V1)
-        else:
-            ext_model = resnet.resnet50(weights = None)
-
-    cls_model = nn.Linear(ext_model.fc.in_features, num_classes)
-    ext_model.fc = nn.Identity()
-
-    return ext_model, cls_model
-'''
-
