@@ -10,7 +10,7 @@ from fused_train import train_process
 from topology.TopoLoador import TopoLoador
 
 # mnist, fmnist, cifar10
-# MLP,  resnet
+# MLP,  resnet, ViT
 # pretrain on torchvision
 
 def main():
@@ -60,8 +60,8 @@ def main():
     parser.add_argument('--backend', type=str, default='gloo', help='Name of the backend to use.')
 
     # decentralized protocol settings
-    parser.add_argument('--topology', type=str, default='./topology/10D5.txt')
-    parser.add_argument('--strategy', type=str, default='Static') #Exponential Static
+    parser.add_argument('--topology', type=str, default='./topology/10D5.txt', help='path of the stored topology map.')
+    parser.add_argument('--strategy', type=str, default='Static', help='topology generation strategy, options: Exponential, Static, Generate')
     parser.add_argument('--outdegree', default=2, type=int, help='outdegree for topology, only for Generate strategy')
     parser.add_argument('--B', default=1, type=int, help='strongly connected period for the protocol')
     parser.add_argument('--sync', action='store_false', help='force synchronization. Default is True.')
