@@ -1,5 +1,5 @@
 # mnist, fmnist, cifar10
-# MLP,  resnet
+# MLP, resnet, ViT
 # pretrain on torchvision
 
 import torch
